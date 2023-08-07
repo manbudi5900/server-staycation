@@ -27,6 +27,7 @@ func (s *FeatureService) Save(input dto.FeatureInput)(domain.Feature, error){
 	Feature.Name = input.Name
 	Feature.Qty = input.Qty
 	Feature.ImageUrl = input.ImageUrl
+	Feature.ProductID = input.ProductID
 
 	newFeature, err := s.FeatureRepository.Save(Feature)
 	if err != nil{
@@ -45,6 +46,7 @@ func (s *FeatureService) Update(input dto.FeatureInput, id string)(domain.Featur
 	Feature.Name = input.Name
 	Feature.Qty = input.Qty
 	Feature.ImageUrl = input.ImageUrl
+	Feature.ProductID = input.ProductID
 
 	
 	fmt.Println(Feature)

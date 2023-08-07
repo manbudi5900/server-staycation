@@ -27,6 +27,7 @@ func (s *ActivityService) Save(input dto.ActivityInput)(domain.Activity, error){
 	activity.Name = input.Name
 	activity.Type = input.Type
 	activity.ImageUrl = input.ImageUrl
+	activity.ProductID = input.ProductID
 
 	newActivity, err := s.ActivityRepository.Save(activity)
 	if err != nil{
@@ -45,6 +46,7 @@ func (s *ActivityService) Update(input dto.ActivityInput, id string)(domain.Acti
 	activity.Name = input.Name
 	activity.Type = input.Type
 	activity.ImageUrl = input.ImageUrl
+	activity.ProductID = input.ProductID
 
 	
 	fmt.Println(activity)

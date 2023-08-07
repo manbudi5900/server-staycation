@@ -20,6 +20,7 @@ func ProductRoute(routes (*gin.Engine) ,api handler.ProductHandler, dbConfig *go
 	{
 		prd.POST("/upload-image/:folder", middleware.AuthAdminMiddleware(authService, userService), api.UploadImage)
 		prd.POST("/product/store", middleware.AuthAdminMiddleware(authService, userService) ,api.Save)
+		prd.GET("/landing-page", api.GetLandingPage)
 		
 	}
 }

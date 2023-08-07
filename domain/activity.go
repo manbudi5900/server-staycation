@@ -7,6 +7,7 @@ type Activity struct {
 	Name string
 	Type string
 	ImageUrl string
+	ProductID string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

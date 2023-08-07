@@ -12,6 +12,10 @@ type Product struct {
 	Province string
 	City string
 	Description string
+	IsPopuler bool
+	Unit string `json:"unit"`
+	Type string `json:"type"`
+	ProductImage []ProductImage `json:"product_images"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
