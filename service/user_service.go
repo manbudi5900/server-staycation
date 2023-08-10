@@ -73,6 +73,7 @@ func (s UserService) LoginUser(input dto.LoginUserInput) (domain.User, error){
 	password := input.Password
 
 	user, err := s.UserRepository.FindByEmail(email)
+	fmt.Println(user)
 	if err != nil {
 		return user, err
 	}

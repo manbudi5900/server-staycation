@@ -8,7 +8,6 @@ import (
 	"staycation/helper"
 	"staycation/service"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -58,8 +57,6 @@ func (h *ProductHandler) Save(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		fmt.Println("sasasa")
-		fmt.Println(strings.Split(err.Error(), "Tag"))
 		errorMessage := gin.H{"errors": helper.FormatValidatorError(err)}
 		response := helper.APIResponse("Product store failed1", http.StatusBadRequest, "failed", errorMessage)
 		c.JSON(http.StatusUnprocessableEntity, response)
@@ -84,7 +81,22 @@ func (h *ProductHandler) GetLandingPage(c *gin.Context){
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
+	
 	formatter := formatter.FormatLandingPage(landingPage.Hero,landingPage.Category, landingPage.Product) 
+	response := helper.APIResponse("Feature has been showing", http.StatusCreated, "success", formatter)
+	c.JSON(http.StatusOK, response)
+}
+func (h *ProductHandler) GetProductDetail(c *gin.Context){
+	Slug := c.Param("slug")
+
+	product, err := h.productService.GetProductDetail(Slug)
+	if err != nil {
+		errorMessage := gin.H{"errors": helper.FormatValidatorError(err)}
+		response := helper.APIResponse("Get Landing Page Failed", http.StatusBadRequest, "failed", errorMessage)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	formatter := formatter.FormatProductDetail(product) 
 	response := helper.APIResponse("Feature has been showing", http.StatusCreated, "success", formatter)
 	c.JSON(http.StatusOK, response)
 }

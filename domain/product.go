@@ -15,7 +15,11 @@ type Product struct {
 	IsPopuler bool
 	Unit string `json:"unit"`
 	Type string `json:"type"`
+	IsBooking int `json:"is_boking"`
 	ProductImage []ProductImage `json:"product_images"`
+	Activity []Activity 
+	Feature []Feature
+	Category Category
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

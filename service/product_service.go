@@ -51,6 +51,7 @@ func (s ProductService) Save(input dto.ProductInput) (domain.Product, error){
 	return newProduct, nil
 }
 
+
 func (s ProductService) GetLandingPage() (domain.LandingPage, error){
 	var landingPage domain.LandingPage
 	hero, err := s.ProductRepository.GetHero()
@@ -71,5 +72,16 @@ func (s ProductService) GetLandingPage() (domain.LandingPage, error){
 	return landingPage, nil
 	
 }
+func (s ProductService) GetProductDetail(Slug string) (domain.Product, error){
+	var product domain.Product
+	product, err := s.ProductRepository.GetDetailProduct(Slug)
+	if err != nil{
+		return product, err
+	}
+	
+	return product, nil
+	
+}
+
 
 

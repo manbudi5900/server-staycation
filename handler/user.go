@@ -3,11 +3,11 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"staycation/domain"
 	"staycation/dto"
 	"staycation/formatter"
 	"staycation/helper"
 	"staycation/service"
-	"staycation/user"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,7 +53,6 @@ func (h UserHandler) LoginUser(c *gin.Context) {
 	
 	var input dto.LoginUserInput
 
-	fmt.Println(input.Email)
 
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
@@ -97,7 +96,7 @@ func (h UserHandler) UploadAvatar(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-	currentUser := c.MustGet("currentUser").(user.User)
+	currentUser := c.MustGet("currentUser").(domain.User)
 	userID := currentUser.ID
 
 	path := fmt.Sprintf("images/%s-%s", userID, file.Filename)

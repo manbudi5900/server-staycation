@@ -8,5 +8,6 @@ type ProductInput struct {
 	Description string `json:"description" binding:"required"`
 	Province string `json:"province" binding:"required"`
 	City string `json:"city" binding:"required"`
+	IsBooking int `json:"is_boking"`
 	Url []string `json:"url" binding:"required"`
 }

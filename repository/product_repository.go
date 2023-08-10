@@ -8,6 +8,8 @@ import (
 
 type ProductRepositoryContract interface {
 	Save(product domain.Product)(domain.Product, error)
+	Update(product domain.Product)(domain.Product, error)
+
 	SaveProductImage(productImage domain.ProductImage)(domain.ProductImage, error)
 }
 type ProductRepository struct {
@@ -18,6 +20,14 @@ func NewProductRepository(db *gorm.DB) ProductRepository {
 }
 
 func (r ProductRepository) Save(product domain.Product) (domain.Product, error) {
+
+	err := r.db.Save(&product).Error
+	if err != nil {
+		return product, err
+	}
+	return product, nil
+} 
+func (r ProductRepository) Update(product domain.Product) (domain.Product, error) {
 
 	err := r.db.Save(&product).Error
 	if err != nil {
@@ -75,11 +85,21 @@ func (r ProductRepository) GetMostPicked() ([]domain.Product, error){
 	
 	return product, nil
 }
+func (r ProductRepository) GetDetailProduct(Slug string) (domain.Product, error){
+	
+	var product domain.Product
+	err := r.db.Preload("ProductImage").Preload("Feature").Preload("Activity").Preload("Category.Product", "slug != ?",Slug).Where("slug", Slug).First(&product).Error
+
+	if err != nil {
+		return product, err
+	}
+	
+	return product, nil
+}
+
 func (r ProductRepository) GetCategory() ([]domain.Category, error){
 	
 	var category []domain.Category
-
-
 	
 	err := r.db.Preload("Product.ProductImage").Find(&category).Error
 

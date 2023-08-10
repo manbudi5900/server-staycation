@@ -1,6 +1,8 @@
 package injection
 
 import (
+	"log"
+	"staycation/config"
 	"staycation/handler"
 	"staycation/repository"
 	"staycation/service"
@@ -38,5 +40,19 @@ func InitActivityAPI(db *gorm.DB) handler.ActivityHandler {
 	activityRepository := repository.NewActivityRepository(db)
 	activityService := service.NewActivityService(activityRepository)
 	activityAPI := handler.NewActivityHandler(activityService, service.NewAuthService())
+	return activityAPI
+}
+func InitTransactionAPI(db *gorm.DB) handler.TransactionHandler {
+	config1, err := config.LoadConfig(".")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	productRepository := repository.NewProductRepository(db)
+	paymentRepository := repository.NewPaymentRepository(config1.Midtrans)
+	paymentService := service.NewPaymentService(paymentRepository)
+
+	activityRepository := repository.NewTransactionRepository(db)
+	transactionService := service.NewTransactionService(activityRepository,paymentService ,productRepository)
+	activityAPI := handler.NewTransactionHandler(transactionService, service.NewAuthService())
 	return activityAPI
 }

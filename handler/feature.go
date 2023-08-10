@@ -8,7 +8,6 @@ import (
 	"staycation/helper"
 	"staycation/service"
 	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,8 +52,6 @@ func (h FeatureHandler) UpdateFeature(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		fmt.Println("sasasa")
-		fmt.Println(strings.Split(err.Error(), "Tag"))
 		errorMessage := gin.H{"errors": helper.FormatValidatorError(err)}
 		response := helper.APIResponse("Feature store failed1", http.StatusBadRequest, "failed", errorMessage)
 		c.JSON(http.StatusUnprocessableEntity, response)

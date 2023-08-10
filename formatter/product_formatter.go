@@ -13,6 +13,7 @@ type ProductFormatter struct {
 	Country string `json:"country"`
 	Province string `json:"province"`
 	City string `json:"city"`
+	ImageURL string `json:"image_url"`
 	Description string `json:"description"`
 }
 

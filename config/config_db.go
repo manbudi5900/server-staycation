@@ -1,4 +1,4 @@
-package db
+package config
 
 import (
 	"log"
@@ -23,7 +23,7 @@ func InitDB() *gorm.DB  {
 
 
 	dsn := "host="+dbHost+" user="+dbUsername+" password="+dbPassword+" dbname="+dbName+" port="+dbPort+" sslmode=disable TimeZone=Asia/Jakarta"
-	db , err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db , err := gorm.Open(postgres.Open(dsn), &gorm.Config{SkipDefaultTransaction: true,})
 	if err != nil {
 		log.Fatal(err.Error())
 	}
