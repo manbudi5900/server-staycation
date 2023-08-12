@@ -52,6 +52,9 @@ func (s TransactionService) CreateTransaction(input dto.TransactionInput) (domai
 	if err != nil {
 		return transaction, errors.New("Product not found")
 	}
+	if product.IsBooking == 1 {
+		return transaction, errors.New("This product has been booked")
+	}
 
 	newTransaction, err := s.TransactionRepository.Save(transaction)
 	if err != nil {
@@ -101,6 +104,12 @@ func (s TransactionService) ProcessPayment(input dto.TransactionNotificationInpu
 		transaction.Status = 1
 	} else if input.TransactionStatus == "deny" || input.TransactionStatus == "expire" || input.TransactionStatus == "cancel" {
 		transaction.Status = -1
+		product, err := s.TransactionRepository.GetProductByID(transaction.ProductID)
+		if err != nil {
+		}
+		product.IsBooking = 0
+		_, err = s.ProductRepository.Update(product)
+
 	}
 
 	updatedTransaction, err := s.TransactionRepository.Update(transaction)
