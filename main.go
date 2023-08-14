@@ -8,5 +8,5 @@ func main() {
 
 	routes := routes2.Init()
 
-	routes.Run(":9000")
+	routes.Run(":8000")
 }
