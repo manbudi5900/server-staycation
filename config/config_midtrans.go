@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-
+	"os"
 	"github.com/spf13/viper"
 )
 
@@ -28,9 +28,14 @@ type PaymentConfigurations struct {
 }
 
 func LoadConfig(path string) (config MainConfig, err error) {
-	viper.AddConfigPath(path)
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
+	workingdir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error reading given path:", err)
+		// logger.Error(err)
+	}
+	fmt.Printf(workingdir + "/config.yaml")
+
+	viper.SetConfigFile("/home/go/staycation/config.yaml")
 
 	viper.AutomaticEnv()
 

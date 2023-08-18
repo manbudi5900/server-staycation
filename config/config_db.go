@@ -2,7 +2,9 @@ package config
 
 import (
 	"log"
-	"staycation/domain"
+	// "os"
+
+	// "staycation/domain"
 
 	"github.com/joho/godotenv"
 
@@ -12,7 +14,7 @@ import (
 )
 
 func InitDB() *gorm.DB  {
-	processENV()
+	// processENV()
 
 	// dbUsername := os.Getenv("DB_USERNAME")
 	// dbPassword := os.Getenv("DB_PASSWORD")
@@ -20,11 +22,11 @@ func InitDB() *gorm.DB  {
 	// dbPort := os.Getenv("DB_PORT")
 	// dbName := os.Getenv("DB_DATABASE")
 
-	var dbUsername = "edwzgbymhxftlx"
-	var dbPassword = "2ff13d0e42b4c64cebc75d88f9e6ada58b1b63b6470654ceb47d4fdfc1556565"
-	var dbHost = "ec2-52-215-68-14.eu-west-1.compute.amazonaws.com"
+	var dbUsername = "postgres"
+	var dbPassword = "Gemperayam12"
+	var dbHost = "localhost"
 	var dbPort = "5432"
-	var dbName ="ddu8acp2fpitg6"
+	var dbName ="staycation"
 
 
 	dsn := "host="+dbHost+" user="+dbUsername+" password="+dbPassword+" dbname="+dbName+" port="+dbPort+" sslmode=disable TimeZone=Asia/Jakarta"
@@ -39,10 +41,10 @@ func InitDB() *gorm.DB  {
 }
 
 func migrateDDL(db *gorm.DB) {
-	db.AutoMigrate(&domain.ProductImage{})
-	db.AutoMigrate(&domain.Category{})
-	db.AutoMigrate(&domain.User{})
-	db.AutoMigrate(&domain.Product{})
+	// db.AutoMigrate(&domain.ProductImage{})
+	// db.AutoMigrate(&domain.Category{})
+	// db.AutoMigrate(&domain.User{})
+	// db.AutoMigrate(&domain.Product{})
 }
 
 func processENV() {

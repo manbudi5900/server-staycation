@@ -43,7 +43,7 @@ func InitActivityAPI(db *gorm.DB) handler.ActivityHandler {
 	return activityAPI
 }
 func InitTransactionAPI(db *gorm.DB) handler.TransactionHandler {
-	config1, err := config.LoadConfig(".")
+	config1, err := config.LoadConfig("../")
 	if err != nil {
 		log.Fatal(err.Error())
 	}

@@ -69,6 +69,9 @@ func FormatCategoryLanding(categorys []domain.Category) []CategoryLandingFormatt
 			formatterItem = append(formatterItem, formatterProduct)
 	
 		}
+		if formatterItem == nil {
+			formatterItem = []MostPickedFormatter{}
+		}
 		formatter1 := CategoryLandingFormatter{
 			ID : category.ID,
 			Name : category.Name,

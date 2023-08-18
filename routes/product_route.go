@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"net/http"
 	"staycation/handler"
 	"staycation/middleware"
 	"staycation/repository"
@@ -19,12 +18,12 @@ func ProductRoute(routes (*gin.Engine) ,api handler.ProductHandler, dbConfig *go
 	authService := service.NewAuthService()
 	prd := routes.Group("/api/v1")
 	{
-		prd.GET("/",func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"data": "hello world"})    
-		  })
+		// prd.GET("/",func(c *gin.Context) {
+		// 	c.JSON(http.StatusOK, gin.H{"data": "hello world"})    
+		//   })
 		prd.POST("/upload-image/:folder", middleware.AuthAdminMiddleware(authService, userService), api.UploadImage)
 		prd.POST("/product/store", middleware.AuthAdminMiddleware(authService, userService) ,api.Save)
-		prd.GET("/landing-page", api.GetLandingPage)
+		prd.GET("/landing-page", api.GetLandingPage, middleware.CORSMiddleware())
 		prd.GET("/product-detail/:slug", api.GetProductDetail)
 
 		
