@@ -82,7 +82,7 @@ func (h TransactionHandler) CreateTransaction(c *gin.Context) {
 		
 		txHandle.Rollback()
 		errors := helper.FormatValidatorError(err)
-		fmt.Println(errors)
+		fmt.Println("rollback1")
 
 		errorMessage := gin.H{"errors": errors}
 		response := helper.APIResponse(
@@ -101,6 +101,7 @@ func (h TransactionHandler) CreateTransaction(c *gin.Context) {
 	newTransaction, err := h.transactionService.CreateTransaction(input)
 	if err != nil {
 		txHandle.Rollback()
+		fmt.Println("rollback2")
 		errors := helper.FormatValidatorError(err)
 		fmt.Println(errors)
 
@@ -111,6 +112,7 @@ func (h TransactionHandler) CreateTransaction(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
+	fmt.Println("commit")
 	if err := txHandle.Commit().Error; err != nil {
 		log.Print("trx commit error: ", err)
 	}
