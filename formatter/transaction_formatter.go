@@ -1,6 +1,7 @@
 package formatter
 
 import (
+	"encoding/json"
 	"staycation/domain"
 	"time"
 )
@@ -20,7 +21,7 @@ type TransactionFormatter struct {
 	Amount     int    `json:"amount"`
 	Status     int `json:"status"`
 	Code       string `json:"code"`
-	PaymentURL string `json:"payment_url"`
+	PaymentURL error `json:"payment_url"`
 }
 
 type UserTransactionFormatter struct {
@@ -99,6 +100,9 @@ func FormatTransaction(transaction domain.Transaction) TransactionFormatter {
 	formatter.Amount = transaction.Amount
 	formatter.Status = transaction.Status
 	formatter.Code = transaction.Code
-	formatter.PaymentURL = transaction.PaymentURL
+	var m map[string]map[string]interface{}
+
+	temp := json.Unmarshal([]byte(transaction.PaymentURL), &m)
+	formatter.PaymentURL =  temp
 	return formatter
 }

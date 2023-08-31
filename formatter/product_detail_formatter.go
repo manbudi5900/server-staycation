@@ -20,7 +20,7 @@ type ProductDetailFormatter struct {
 	Feature []FeatureFormatter `json:"features"`
 	Activity []ActivityFormatter `json:"activities"`
 	Category []CategoryLandingFormatter `json:"categories"`
-	Testimonial []TestimonialFormatter `json:"testimonial"`
+	Testimonial TestimonialFormatter `json:"testimonial"`
 	
 }
 
@@ -48,6 +48,9 @@ func FormatProductDetail(product domain.Product) ProductDetailFormatter {
 		formatterItemImage = append(formatterItemImage, formatterProductImage)
 
 	}
+	if formatterItemImage == nil {
+		formatterItemImage = []ProductImageFormatter{}
+	}
 	formatter.ProductImage = formatterItemImage
 
 	var formatterItemFeature []FeatureFormatter
@@ -57,6 +60,9 @@ func FormatProductDetail(product domain.Product) ProductDetailFormatter {
 		formatterProductFeature :=  FormatFeature(items)
 		formatterItemFeature = append(formatterItemFeature, formatterProductFeature)
 
+	}
+	if formatterItemFeature == nil {
+		formatterItemFeature = []FeatureFormatter{}
 	}
 	formatter.Feature = formatterItemFeature
 
@@ -68,15 +74,22 @@ func FormatProductDetail(product domain.Product) ProductDetailFormatter {
 		formatterItemActivity = append(formatterItemActivity, formatterProductActivity)
 
 	}
+	if formatterItemActivity == nil {
+		formatterItemActivity = []ActivityFormatter{}
+	}
 	formatter.Activity = formatterItemActivity
 
 	var formatterCategory []CategoryLandingFormatter
 	var formatterItem []MostPickedFormatter
-		for _,items := range product.Category.Product {
+		for _,items := range product.Category.Products {
 			formatterProduct :=  FormatProductLanding(items)
 			formatterItem = append(formatterItem, formatterProduct)
 	
 		}
+		if formatterItem == nil {
+			formatterItem = []MostPickedFormatter{}
+		}
+		
 		formatter1 := CategoryLandingFormatter{
 			ID : product.Category.ID,
 			Name : product.Category.Name,
@@ -85,7 +98,7 @@ func FormatProductDetail(product domain.Product) ProductDetailFormatter {
 		formatterCategory = append(formatterCategory, formatter1)
 	
 		formatter.Category = formatterCategory
-	var formatterTestimoni []TestimonialFormatter
+	var formatterTestimoni TestimonialFormatter
 	var testimonial domain.Testimonial
 	testimonial.Name = "Happy Family"
 	testimonial.ID = 1
@@ -94,7 +107,7 @@ func FormatProductDetail(product domain.Product) ProductDetailFormatter {
 	testimonial.Content =  "What a great trip with my family and I should try again and again next time soon..."
 	testimonial.FamilyName = "Budi"
 	testimonial.FamilyOccupation = "Programmer"
-	formatterTestimoni = append(formatterTestimoni, FormatTestimonial(testimonial))
+	formatterTestimoni =FormatTestimonial(testimonial)
 	formatter.Testimonial = formatterTestimoni
 	return formatter
 }

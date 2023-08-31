@@ -19,6 +19,8 @@ type MostPickedFormatter struct {
 	City string `json:"city"`
 	Unit string `json:"unit"`
 	Type string `json:"type"`
+	HotelName string `json:"hotel_name"`
+	HotelLogo string `json:"hotel_logo"`
 	ImageUrl string `json:"url"`
 	IsPopuler bool `json:"is_popular"`
 }
@@ -34,6 +36,8 @@ func FormatProductLanding(product domain.Product) MostPickedFormatter {
 	formatter.City = product.City
 	formatter.Unit = product.Unit
 	formatter.Type = product.Type
+	formatter.HotelName = product.Hotel.Name
+	formatter.HotelLogo = product.Hotel.Logo
 	if len(product.ProductImage) > 0 {
 		formatter.ImageUrl = product.ProductImage[0].Url
 	}
@@ -62,12 +66,16 @@ type CategoryLandingFormatter struct {
 }
 func FormatCategoryLanding(categorys []domain.Category) []CategoryLandingFormatter {
 	var formatter []CategoryLandingFormatter
-	var formatterItem []MostPickedFormatter
 	for _,category := range categorys{
-		for _,items := range category.Product {
+		var formatterItem []MostPickedFormatter
+
+		for _,items := range category.Products {
 			formatterProduct :=  FormatProductLanding(items)
 			formatterItem = append(formatterItem, formatterProduct)
 	
+		}
+		if formatterItem == nil {
+			formatterItem = []MostPickedFormatter{}
 		}
 		formatter1 := CategoryLandingFormatter{
 			ID : category.ID,

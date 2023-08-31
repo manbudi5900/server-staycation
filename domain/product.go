@@ -6,7 +6,8 @@ type Product struct {
 	ID string `gorm:"type:uuid;default:uuid_generate_v4();primary_key;"`
 	Name string
 	Slug string
-	CategoryID string
+	CategoryID int
+	HotelID string
 	Price int
 	Country string
 	Province string
@@ -19,6 +20,7 @@ type Product struct {
 	ProductImage []ProductImage `json:"product_images"`
 	Activity []Activity 
 	Feature []Feature
+	Hotel Hotel
 	Category Category
 	CreatedAt time.Time
 	UpdatedAt time.Time

@@ -72,9 +72,9 @@ func (s TransactionService) CreateTransaction(input dto.TransactionInput) (domai
 	}
 	
 
-	newTransaction.PaymentURL = paymentURL
+	
+	newTransaction.PaymentURL = string(paymentURL)
 	newTransaction, err = s.TransactionRepository.Update(newTransaction)
-	err = errors.New("No user found on that email")
 	if err != nil {
 		fmt.Println(err)
 		return newTransaction, err

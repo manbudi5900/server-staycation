@@ -87,6 +87,26 @@ func (h UserHandler) LoginUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (h UserHandler) CekToken(c *gin.Context) {
+	var input dto.CekTokenInput
+
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		errorMessage := gin.H{"errors": helper.FormatValidatorError(err)}
+		response := helper.APIResponse("Login account failed", http.StatusBadRequest, "failed", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+	_, err = h.authService.ValidateToken(input.Token)
+	if err != nil {
+		errorMessage := gin.H{"errors": helper.FormatValidatorError(err)}
+		response := helper.APIResponse("Login account failed", http.StatusBadRequest, "failed", errorMessage)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	c.JSON(http.StatusOK, "success")
+}
+
 func (h UserHandler) UploadAvatar(c *gin.Context) {
 	file, err := c.FormFile("avatar")
 	if err != nil {

@@ -28,9 +28,9 @@ type PaymentConfigurations struct {
 }
 
 func LoadConfig(path string) (config MainConfig, err error) {
-	viper.AddConfigPath(path)
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
+	
+
+	viper.SetConfigFile("config.yaml")
 
 	viper.AutomaticEnv()
 

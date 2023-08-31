@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"fmt"
 	"staycation/domain"
 	"staycation/repository"
@@ -63,6 +64,12 @@ func (s PaymentService) GetPaymentURL(transaction domain.Transaction, user domai
 	if err != nil {
 		return "", err
 	}
+	fmt.Println("tolol")
+	fmt.Println(snapTokenResp)
+	temp, err := json.Marshal(snapTokenResp)
+	if err != nil {
+		return "", err
+	}
 
-	return snapTokenResp.RedirectURL, nil
+	return string(temp), nil
 }

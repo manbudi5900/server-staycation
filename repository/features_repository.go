@@ -40,6 +40,17 @@ func (r FeatureRepository) Save(feature domain.Feature) (domain.Feature, error) 
 	}
 	return feature, nil
 }
+func (r FeatureRepository) SaveHotel(feature domain.Feature) (domain.Feature, error) {
+	sqlStatement := `
+		INSERT INTO features (qty, name, image_url, hotel_id)
+		VALUES ($1, $2, $3, $4)`
+	err := r.db.Exec(sqlStatement, feature.Qty, feature.Name, feature.ImageUrl, feature.HotelID).Error
+	// err := r.db.Create(&feature).Error
+	if err != nil {
+		return feature, err
+	}
+	return feature, nil
+}
 func (r FeatureRepository) Update(feature domain.Feature)(domain.Feature, error){
 	err := r.db.Save(&feature).Error
 	if err != nil {

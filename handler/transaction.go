@@ -73,10 +73,6 @@ func (h TransactionHandler) CreateTransaction(c *gin.Context) {
 	txHandle := c.MustGet("db_trx").(*gorm.DB)
 
 	fmt.Println(txHandle)
-
-
-	// fmt.Println(input)
-
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
 		
@@ -95,15 +91,11 @@ func (h TransactionHandler) CreateTransaction(c *gin.Context) {
 
 	currentUser := c.MustGet("currentUser").(domain.User)
 	input.User = currentUser
-	fmt.Println("input")
-	fmt.Println(input)
 
 	newTransaction, err := h.transactionService.CreateTransaction(input)
 	if err != nil {
 		txHandle.Rollback()
-		fmt.Println("rollback2")
 		errors := helper.FormatValidatorError(err)
-		fmt.Println(errors)
 
 		errorMessage := gin.H{"errors": errors}
 		response := helper.APIResponse(
@@ -112,7 +104,6 @@ func (h TransactionHandler) CreateTransaction(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
-	fmt.Println("commit")
 	if err := txHandle.Commit().Error; err != nil {
 		log.Print("trx commit error: ", err)
 	}

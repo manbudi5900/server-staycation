@@ -36,6 +36,14 @@ func InitFeatureAPI(db *gorm.DB) handler.FeatureHandler {
 	featureAPI := handler.NewFeatureHandler(featureService, service.NewAuthService())
 	return featureAPI
 }
+func InitHotelAPI(db *gorm.DB) handler.HotelHandler {
+	hotelRepository := repository.NewHotelRepository(db)
+	productRepository := repository.NewProductRepository(db)
+	featureRepository := repository.NewFeatureRepository(db)
+	hotelService := service.NewHotelService(hotelRepository, productRepository,featureRepository)
+	hotelAPI := handler.NewHotelHandler(hotelService, service.NewAuthService())
+	return hotelAPI
+}
 func InitActivityAPI(db *gorm.DB) handler.ActivityHandler {
 	activityRepository := repository.NewActivityRepository(db)
 	activityService := service.NewActivityService(activityRepository)
@@ -43,7 +51,7 @@ func InitActivityAPI(db *gorm.DB) handler.ActivityHandler {
 	return activityAPI
 }
 func InitTransactionAPI(db *gorm.DB) handler.TransactionHandler {
-	config1, err := config.LoadConfig(".")
+	config1, err := config.LoadConfig("../")
 	if err != nil {
 		log.Fatal(err.Error())
 	}

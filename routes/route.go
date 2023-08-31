@@ -1,9 +1,12 @@
 package routes
 
 import (
+	"fmt"
+	"net/http"
 	db2 "staycation/config"
 	"staycation/injection"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,11 +17,26 @@ func Init() *gin.Engine{
 	categoryAPI := injection.InitCategoryAPI(dbConfig)
 	userAPI := injection.InitUserAPI(dbConfig)
 	featureAPI := injection.InitFeatureAPI(dbConfig)
+	hotelAPI := injection.InitHotelAPI(dbConfig)
+
 	activityAPI := injection.InitActivityAPI(dbConfig)
 
 	transactionAPI := injection.InitTransactionAPI(dbConfig)
 
 	routes := gin.Default()
+
+	// config := cors.DefaultConfig()
+	// config.AllowOrigins = []string{"*"} // Replace with your frontend's URL
+	// config.AllowMethods = []string{"GET", "POST", "OPTIONS", "PUT", "DELETE"}
+	// config.AllowHeaders = []string{"Content-Type"}
+	// config.AllowHeaders = []string{"Authorization"}
+	// config.AllowHeaders = []string{"Content-Type", "Access-Control-Allow-Origin"} // Add "Access-Control-Allow-Origin"
+	// config.AllowHeaders = []string{"Content-Type", "Access-Control-Allow-Headers"} // Add "Access-Control-Allow-Origin"
+
+
+	// routes.Use(cors.New(config))
+    routes.Use(cors.Default())
+
 
 	// set logger
 	routes.Use(gin.Logger())
@@ -28,13 +46,19 @@ func Init() *gin.Engine{
 	// Gzip Compression
 	routes.Use(gin.Recovery())
 	routes.Static("/images", "./images")
+	routes.GET("/",func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"data": "hello world"})    
+	  })
+
+	fmt.Println("route")
 
 	ProductRoute(routes, productAPI, dbConfig)
 	CategoryRoute(routes, categoryAPI, dbConfig)
-	UserRoute(routes, userAPI, dbConfig)
 	FeatureRoute(routes, featureAPI, dbConfig)
+	HotelRoute(routes, hotelAPI, dbConfig)
 	ActivityRoute(routes, activityAPI, dbConfig)
 	TransactionRoute(routes, transactionAPI, dbConfig)
+	UserRoute(routes, userAPI, dbConfig)
 
 
 	return routes

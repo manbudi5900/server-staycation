@@ -8,6 +8,7 @@ type Feature struct {
 	Qty int
 	ImageUrl string
 	ProductID string
+	HotelID string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

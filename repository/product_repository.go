@@ -36,13 +36,28 @@ func (r ProductRepository) Update(product domain.Product) (domain.Product, error
 	return product, nil
 } 
 func (r ProductRepository) SaveProductImage(productImage domain.ProductImage) (domain.ProductImage, error) {
-
-	err := r.db.Save(&productImage).Error
+	sqlStatement := `
+		INSERT INTO product_images (product_id, url)
+		VALUES ($1, $2)`
+	err := r.db.Exec(sqlStatement, productImage.HotelID, productImage.Url).Error
+	// err := r.db.Save(&productImage).Error
 	if err != nil {
 		return productImage, err
 	}
 	return productImage, nil
 } 
+func (r ProductRepository) SaveProductImageHotel(productImage domain.ProductImage) (domain.ProductImage, error) {
+	sqlStatement := `
+		INSERT INTO product_images (hotel_id, url)
+		VALUES ($1, $2)`
+	err := r.db.Exec(sqlStatement, productImage.HotelID, productImage.Url).Error
+	// err := r.db.Save(&productImage).Error
+	if err != nil {
+		return productImage, err
+	}
+	return productImage, nil
+} 
+
 func (r ProductRepository) GetHero() (domain.Hero, error){
 	var feature []domain.Feature
 	var hero domain.Hero
@@ -77,7 +92,7 @@ func (r ProductRepository) GetMostPicked() ([]domain.Product, error){
 
 
 	
-	err := r.db.Preload("ProductImage").Find(&product).Error
+	err := r.db.Preload("ProductImage").Preload("Hotel").Find(&product).Error
 
 	if err != nil {
 		return product, err
@@ -88,7 +103,7 @@ func (r ProductRepository) GetMostPicked() ([]domain.Product, error){
 func (r ProductRepository) GetDetailProduct(Slug string) (domain.Product, error){
 	
 	var product domain.Product
-	err := r.db.Preload("ProductImage").Preload("Feature").Preload("Activity").Preload("Category.Product", "slug != ?",Slug).Where("slug", Slug).First(&product).Error
+	err := r.db.Preload("ProductImage").Preload("Hotel").Preload("Feature").Preload("Activity").Preload("Category.Products.ProductImage").Preload("Category.Products", "slug != ?",Slug).Where("slug", Slug).First(&product).Error
 
 	if err != nil {
 		return product, err
@@ -101,7 +116,7 @@ func (r ProductRepository) GetCategory() ([]domain.Category, error){
 	
 	var category []domain.Category
 	
-	err := r.db.Preload("Product.ProductImage").Find(&category).Error
+	err := r.db.Preload("Products.ProductImage").Find(&category).Error
 
 	if err != nil {
 		return category, err

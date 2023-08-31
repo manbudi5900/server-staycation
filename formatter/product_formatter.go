@@ -8,7 +8,7 @@ type ProductFormatter struct {
 	ID       string `json:"id"`
 	Name     string `json:"name"`
 	Slug string `json:"slug"`
-	CategoryID string `json:"category_id"`
+	CategoryID int `json:"category_id"`
 	Price int `json:"price"`
 	Country string `json:"country"`
 	Province string `json:"province"`

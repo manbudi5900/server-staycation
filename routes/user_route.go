@@ -17,5 +17,6 @@ func UserRoute(routes (*gin.Engine) ,api handler.UserHandler, dbConfig *gorm.DB)
 	{
 		prd.POST("/register", api.RegisterUser)
 		prd.POST("/login", api.LoginUser)
+		prd.POST("cek-token", api.CekToken)
 	}
 }

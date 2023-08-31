@@ -75,7 +75,7 @@ func (s UserService) LoginUser(input dto.LoginUserInput) (domain.User, error){
 	user, err := s.UserRepository.FindByEmail(email)
 	fmt.Println(user)
 	if err != nil {
-		return user, err
+		return user, errors.New("No user found on that email")
 	}
 	if user.ID == "0" {
 		return user, errors.New("No user found on that email")
@@ -85,7 +85,7 @@ func (s UserService) LoginUser(input dto.LoginUserInput) (domain.User, error){
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 
 	if err != nil {
-		return user, err
+		return user, errors.New("Password Salah")
 	}
 
 	return user, nil
